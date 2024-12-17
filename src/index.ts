@@ -3,7 +3,7 @@ import * as bodyParser from "body-parser";
 import { Request, Response } from "express";
 import { AppDataSource } from "./data-source";
 import { Routes } from "./routes";
-import config from "./config/config";
+import config from "./configuration/config";
 import auth from "./middlaware/auth";
 
 AppDataSource.initialize();

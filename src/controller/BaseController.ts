@@ -1,5 +1,11 @@
 import { Request } from "express";
-import { FindOneOptions, getRepository, Repository } from "typeorm";
+import {
+  BaseEntity,
+  FindOneOptions,
+  FindOptionsWhere,
+  getRepository,
+  Repository,
+} from "typeorm";
 import { BaseNotification } from "../entity/BaseNotification";
 import { AppDataSource } from "../data-source";
 import { User } from "../entity/User";
@@ -12,7 +18,9 @@ export abstract class BaseController<T> extends BaseNotification {
     this._repository = AppDataSource.getRepository<T>(entity);
   }
   async all() {
-    return this._repository.find();
+    return this._repository.find({
+      where: { deletado: false } as FindOptionsWhere<BaseEntity>,
+    });
   }
 
   async one(request: Request) {
@@ -21,7 +29,12 @@ export abstract class BaseController<T> extends BaseNotification {
 
   async save(model: any) {
     if (model.id) {
-      let _idDB = await this._repository.findOne(model.id);
+      delete model["deletado"];
+      delete model["createAt"];
+
+      let _idDB = await this._repository.findOne({
+        where: { id: model.id } as FindOptionsWhere<BaseEntity>,
+      });
 
       if (_idDB) {
         Object.assign(_idDB, model);
@@ -29,22 +42,30 @@ export abstract class BaseController<T> extends BaseNotification {
     }
 
     if (this.valid()) {
-      return this._repository.save(model);
+      return await this._repository.save(model);
     } else {
       return {
         status: 400,
-        erros: this.allNotifications,
+        errors: this.allNotifications,
       };
     }
   }
 
   async remove(request: Request) {
     let id = request.params.id;
-    let model: any = await this._repository.findOne(id);
+    let model: any = await this._repository.findOne({
+      where: { id: id } as FindOptionsWhere<BaseEntity>,
+    });
+
     if (model) {
       model.deletado = true;
+      return this._repository.save(model);
+    } else {
+      return {
+        status: 404,
+        errors: ["Item não encontrado"],
+      };
     }
-    return this._repository.save(model);
   }
 
   get repository(): Repository<T> {
