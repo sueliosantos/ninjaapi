@@ -4,7 +4,7 @@ import { Request } from "express";
 
 export class CategoryController extends BaseController<Category> {
   constructor() {
-    super(Category);
+    super(Category, true);
   }
 
   async save(req: Request) {
@@ -15,6 +15,6 @@ export class CategoryController extends BaseController<Category> {
       "A descrição da categoria é obrigatório"
     );
 
-    return super.save(_category);
+    return super.save(_category, req);
   }
 }

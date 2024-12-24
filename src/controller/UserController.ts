@@ -68,7 +68,7 @@ export class UserController extends BaseController<User> {
     _user.foto = foto;
     _user.adm = adm;
 
-    return super.save(_user);
+    return super.save(_user, req);
   }
   async save(req: Request) {
     let _user = <User>req.body;
@@ -77,6 +77,6 @@ export class UserController extends BaseController<User> {
     super.isRequired(_user.email, "O email do usuário é obrigatório");
     super.isRequired(_user.senha, "A senha do usuário é obrigatório");
 
-    return super.save(_user);
+    return super.save(_user, req);
   }
 }

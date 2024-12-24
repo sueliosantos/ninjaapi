@@ -12,22 +12,37 @@ import { User } from "../entity/User";
 
 export abstract class BaseController<T> extends BaseNotification {
   private _repository: Repository<T>;
+  private _onlyRootController: boolean = false;
 
-  constructor(entity: any) {
+  public errorRoot: any = {
+    status: 401,
+    errors: ["Você não está autorizado a executar essa funcionalidade"],
+  };
+
+  constructor(entity: any, onlyRoot: boolean = false) {
     super();
     this._repository = AppDataSource.getRepository<T>(entity);
+    this._onlyRootController = onlyRoot;
   }
-  async all() {
+
+  public checkNotPermission(request: Request) {
+    return this._onlyRootController && !request.IsRoot;
+  }
+  async all(request: Request) {
+    if (this.checkNotPermission(request)) return this.errorRoot;
     return this._repository.find({
       where: { deletado: false } as FindOptionsWhere<BaseEntity>,
     });
   }
 
   async one(request: Request) {
+    if (this.checkNotPermission(request)) return this.errorRoot;
     return await this._repository.findOneById(request.params.id);
   }
 
-  async save(model: any) {
+  async save(model: any, request: Request) {
+    if (this.checkNotPermission(request)) return this.errorRoot;
+
     if (model.id) {
       delete model["deletado"];
       delete model["createAt"];
@@ -52,6 +67,7 @@ export abstract class BaseController<T> extends BaseNotification {
   }
 
   async remove(request: Request) {
+    if (this.checkNotPermission(request)) return this.errorRoot;
     let id = request.params.id;
     let model: any = await this._repository.findOne({
       where: { id: id } as FindOptionsWhere<BaseEntity>,

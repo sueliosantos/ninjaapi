@@ -1,9 +1,9 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { User } from "./entity/User";
-import { UserController } from "./controller/UserController";
 import { Category } from "./entity/Category";
 import { SubCategory } from "./entity/SubCategory";
+import { Question } from "./entity/Question";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -14,7 +14,7 @@ export const AppDataSource = new DataSource({
   database: "ninja",
   synchronize: true,
   logging: false,
-  entities: [User, Category, SubCategory],
+  entities: [User, Category, SubCategory, Question],
   migrations: [],
   subscribers: [],
 });
