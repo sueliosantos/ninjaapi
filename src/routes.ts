@@ -1,5 +1,7 @@
 import { CategoryController } from "./controller/CategoryController";
+import { CustumerController } from "./controller/CustumerController";
 import { QuestionController } from "./controller/QuestionController";
+import { ServiceProviderController } from "./controller/ServiceProviderController";
 import { SubCategoryController } from "./controller/SubCategoryController";
 import { UserController } from "./controller/UserController";
 
@@ -116,6 +118,70 @@ export const Routes = [
     method: "delete",
     route: "/question/:id",
     controller: QuestionController,
+    action: "remove",
+  },
+
+  {
+    method: "get",
+    route: "/custumer",
+    controller: CustumerController,
+    action: "all",
+  },
+  {
+    method: "get",
+    route: "/custumer/:id",
+    controller: CustumerController,
+    action: "one",
+  },
+  {
+    method: "post",
+    route: "/custumer",
+    controller: CustumerController,
+    action: "save",
+  },
+
+  {
+    method: "post",
+    route: "/custumer/create",
+    controller: CustumerController,
+    action: "createCustumer",
+  },
+
+  {
+    method: "delete",
+    route: "/custumer/:id",
+    controller: CustumerController,
+    action: "remove",
+  },
+
+  {
+    method: "get",
+    route: "/serviceProvider",
+    controller: ServiceProviderController,
+    action: "all",
+  },
+  {
+    method: "get",
+    route: "/serviceProvider/:id",
+    controller: ServiceProviderController,
+    action: "one",
+  },
+  {
+    method: "post",
+    route: "/serviceProvider",
+    controller: ServiceProviderController,
+    action: "save",
+  },
+  {
+    method: "post",
+    route: "/serviceProvider/create",
+    controller: ServiceProviderController,
+    action: "createServiceProvider",
+  },
+  {
+    method: "delete",
+    route: "/serviceProvider/:id",
+    controller: ServiceProviderController,
     action: "remove",
   },
 ];

@@ -68,7 +68,7 @@ export class UserController extends BaseController<User> {
     _user.foto = foto;
     _user.adm = adm;
 
-    return super.save(_user, req);
+    return super.save(_user, req, true);
   }
   async save(req: Request) {
     let _user = <User>req.body;

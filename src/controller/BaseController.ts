@@ -40,8 +40,9 @@ export abstract class BaseController<T> extends BaseNotification {
     return await this._repository.findOneById(request.params.id);
   }
 
-  async save(model: any, request: Request) {
-    if (this.checkNotPermission(request)) return this.errorRoot;
+  async save(model: any, request: Request, ignorePermission: boolean = false) {
+    if (!ignorePermission)
+      if (this.checkNotPermission(request)) return this.errorRoot;
 
     if (model.id) {
       delete model["deletado"];
