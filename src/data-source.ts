@@ -4,8 +4,10 @@ import { User } from "./entity/User";
 import { Category } from "./entity/Category";
 import { SubCategory } from "./entity/SubCategory";
 import { Question } from "./entity/Question";
-import { Custumer } from "./entity/Custumer";
 import { ServiceProvider } from "./entity/ServiceProvider";
+import { Customer } from "./entity/Custumer";
+import { RequestOrder } from "./entity/RequestOrder";
+import { RequestOrderAnswer } from "./entity/RequestOrderAnswer";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -16,7 +18,16 @@ export const AppDataSource = new DataSource({
   database: "ninja",
   synchronize: true,
   logging: false,
-  entities: [User, Category, SubCategory, Question, Custumer, ServiceProvider],
+  entities: [
+    User,
+    Category,
+    SubCategory,
+    Question,
+    Customer,
+    ServiceProvider,
+    RequestOrder,
+    RequestOrderAnswer,
+  ],
   migrations: [],
   subscribers: [],
 });
