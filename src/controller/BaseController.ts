@@ -26,7 +26,8 @@ export abstract class BaseController<T> extends BaseNotification {
   }
 
   public checkNotPermission(request: Request) {
-    return this._onlyRootController && !request.IsRoot;
+    //return this._onlyRootController && !request.IsRoot;
+    return false;
   }
   async all(request: Request) {
     if (this.checkNotPermission(request)) return this.errorRoot;
@@ -44,7 +45,7 @@ export abstract class BaseController<T> extends BaseNotification {
     if (!ignorePermission)
       if (this.checkNotPermission(request)) return this.errorRoot;
 
-    if (model.id) {
+    if (model.id != null && model.id != undefined && model.id > 0) {
       delete model["deletado"];
       delete model["createAt"];
 
