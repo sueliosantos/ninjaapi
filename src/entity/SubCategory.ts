@@ -15,4 +15,9 @@ export class SubCategory extends BaseEntity {
 
   @ManyToOne(() => Category, { eager: true })
   category: Category;
+
+  constructor() {
+    super();
+    this.category = new Category(); // Inicializa a propriedade category
+  }
 }
